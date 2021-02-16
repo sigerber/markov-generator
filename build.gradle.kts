@@ -5,6 +5,7 @@ val koinVersion: String by project
 val inlineLoggerVersion: String by project
 val logbackVersion: String by project
 val spekVersion: String by project
+val kotestVersion: String by project
 val junitJupiterVersion: String by project
 
 plugins {
@@ -69,6 +70,7 @@ subprojects {
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
         testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
         testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
-//        testImplementation(gradleTestKit())
+        testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+        testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     }
 }

@@ -1,4 +1,4 @@
-package app
+package adapters
 
 import adapters.config.EnvironmentVariables
 import org.koin.dsl.module
@@ -13,3 +13,8 @@ val envTestModule = module(createdAtStart = true) {
         DateSupplierTestImpl()
     }
 }
+
+val mockedCoreModule = module(createdAtStart = true) {
+
+}
+

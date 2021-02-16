@@ -1,4 +1,4 @@
-package app
+package adapters
 
 import ports.input.util.DateSupplier
 

@@ -12,4 +12,6 @@ dependencies {
     implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
     implementation("org.koin:koin-ktor:$koinVersion")
     implementation("org.koin:koin-logger-slf4j:$koinVersion")
+
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 }

@@ -1,7 +1,6 @@
 package adapters.config
 
 import com.typesafe.config.Config
-import com.zaxxer.hikari.HikariConfig
 import java.util.Properties
 
 /**
@@ -17,21 +16,6 @@ class AppConfig(configRepository: ConfigRepository) {
 
     val deployment by lazy {
         Deployment.create(config = config.getConfig("deployment"))
-    }
-
-    /**
-     * Loads a HikariCP config specified in /resources/application.conf
-     * or any other .conf files visible to HOCON.
-     */
-    val hikari by lazy {
-        val dbConfig = config.getConfig("main-db.hikari")
-        val props = dbConfig.toProperties()
-        val hikariConfig = HikariConfig(props)
-        hikariConfig
-    }
-
-    val randomPerson by lazy {
-        RandomPerson.create(config = config.getConfig("random-person"))
     }
 
     class Deployment private constructor(private val config: Config) {

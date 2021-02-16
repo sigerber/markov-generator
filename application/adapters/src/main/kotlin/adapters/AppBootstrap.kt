@@ -1,36 +1,18 @@
 package adapters
 
-import adapters.persistence.DatabaseErrorInspector
 import adapters.primary.web.util.RestGenericException
 import adapters.primary.web.util.respondRestException
-import adapters.primary.web.util.throwRestException
 import adapters.primary.web.util.toRestErrorResponse
-import adapters.util.setProjectDefaults
 import com.github.michaelbull.logging.InlineLogger
-import io.ktor.application.Application
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.AutoHeadResponse
-import io.ktor.features.CORS
-import io.ktor.features.CallId
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
-import io.ktor.features.callIdMdc
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.jackson.jackson
-import io.ktor.request.header
-import io.ktor.request.uri
-import io.ktor.response.header
-import io.ktor.response.respond
-import org.jetbrains.exposed.exceptions.ExposedSQLException
-import org.koin.ktor.ext.inject
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
+import net.pwall.json.ktor.JSONKtorFunctions.jsonKtor
 import ports.output.errors.DomainException
 import shared.util.e
-import java.util.UUID
+import java.util.*
 
 class AppBootstrap(
     application: Application
@@ -38,8 +20,6 @@ class AppBootstrap(
     private val logger = InlineLogger()
 
     init {
-        val databaseErrorInspector by application.inject<DatabaseErrorInspector>()
-
         application.apply {
             install(AutoHeadResponse)
 
@@ -87,10 +67,7 @@ class AppBootstrap(
 
             // Content conversions - here we setup serialization and deserialization of JSON objects
             install(ContentNegotiation) {
-                // We use Jackson for JSON: https://github.com/FasterXML/jackson
-                jackson {
-                    setProjectDefaults()
-                }
+               jsonKtor()
             }
 
             // Return proper HTTP error: https://ktor.io/features/status-pages.html
@@ -107,14 +84,6 @@ class AppBootstrap(
                 exception<RestGenericException> { ex ->
                     logger.e("StatusPages/RestGenericException", ex) { "REST error to be returned to a caller" }
                     call.respondRestException(ex)
-                }
-                exception<ExposedSQLException> { ex ->
-                    logger.e("StatusPages/ExposedSQLException", ex) { "REST error to be returned to a caller" }
-                    try {
-                        ex.throwRestException(databaseErrorInspector)
-                    } catch (ex: RestGenericException) {
-                        call.respondRestException(ex)
-                    }
                 }
             }
         }

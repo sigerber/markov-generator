@@ -8,13 +8,13 @@ pluginManagement {
         maven(url = "https://jitpack.io")
     }
     plugins {
-        kotlin("jvm") version "1.3.72"
+        kotlin("jvm") version "1.4.30"
         id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
         id("com.github.johnrengelman.shadow") version "5.2.0"
     }
 }
 
-rootProject.name = "addrbook-hexagonal-ktor"
+rootProject.name = "markov-generator"
 include("application:configuration")
 include("application:adapters")
 include("application:core")

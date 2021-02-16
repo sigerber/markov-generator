@@ -2,18 +2,15 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 val kotlinLanguageVersion: String by project
 val koinVersion: String by project
-val hikaricpVersion: String by project
 val inlineLoggerVersion: String by project
 val logbackVersion: String by project
 val spekVersion: String by project
 val junitJupiterVersion: String by project
-val ktlintVersion: String by project
 
 plugins {
     base
     jacoco
     kotlin("jvm")
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 apply {
@@ -30,7 +27,6 @@ allprojects {
         jcenter()
         maven(url = "https://plugins.gradle.org/m2/")
         maven(url = "https://dl.bintray.com/kotlin/ktor")
-        maven(url = "https://dl.bintray.com/kotlin/exposed")
         maven(url = "https://dl.bintray.com/spekframework/spek-dev")
         maven(url = "https://jitpack.io")
     }
@@ -45,8 +41,6 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions {
             languageVersion = kotlinLanguageVersion
@@ -76,12 +70,5 @@ subprojects {
         testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
         testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
 //        testImplementation(gradleTestKit())
-    }
-
-    ktlint {
-        version.set(ktlintVersion)
-        outputToConsole.set(true)
-        enableExperimentalRules.set(true)
-        disabledRules.set(setOf("import-ordering"))
     }
 }

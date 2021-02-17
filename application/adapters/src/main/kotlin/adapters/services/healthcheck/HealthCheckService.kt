@@ -14,7 +14,6 @@ class HealthCheckService(
             ready = true,
             env = appConfig.deployment.env,
             appVersion = appConfig.deployment.version,
-            appBuildNumber = appConfig.deployment.buildNumber,
             responseTimestamp = Date(dateSupplier.currentTimeMillis())
         )
     }

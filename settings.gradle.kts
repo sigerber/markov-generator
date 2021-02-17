@@ -15,7 +15,7 @@ pluginManagement {
 }
 
 rootProject.name = "markov-generator"
-include("application:configuration")
+include("application:app")
 include("application:adapters")
 include("application:core")
 include("application:ports")

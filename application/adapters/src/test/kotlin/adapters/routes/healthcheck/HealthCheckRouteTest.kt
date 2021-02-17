@@ -27,7 +27,6 @@ class HealthCheckRouteTest : DescribeSpec({
                         with(healthCheckResponse) {
                             ready shouldBe true
                             appVersion shouldBe  appConfig.deployment.version
-                            appBuildNumber shouldBe appConfig.deployment.buildNumber
                             responseTimestamp.time shouldBe dateSupplier.currentTimeMillis()
                         }
                     }

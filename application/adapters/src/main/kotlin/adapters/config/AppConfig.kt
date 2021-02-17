@@ -25,9 +25,7 @@ class AppConfig(configRepository: ConfigRepository) {
         val version: String by lazy {
             config.getString("version")
         }
-        val buildNumber: String by lazy {
-            config.getString("buildNumber")
-        }
+
         companion object {
             internal fun create(config: Config) = Deployment(config = config)
         }

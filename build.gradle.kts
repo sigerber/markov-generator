@@ -19,8 +19,7 @@ apply {
 }
 
 allprojects {
-    // TODO you must change this group to your own
-    group = "com.github.mobiletoly.addrbookhexktor"
+    group = "com.prospection.markov.generator"
     version = "1.0-SNAPSHOT"
 
     repositories {
@@ -54,9 +53,7 @@ subprojects {
     }
 
     tasks.withType<Test> {
-        useJUnitPlatform {
-            includeEngines("spek2")
-        }
+        useJUnitPlatform()
     }
 
     dependencies {
@@ -68,9 +65,8 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
         testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-        testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
-        testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+        testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     }
 }

@@ -39,12 +39,5 @@ class ModelTest : DescribeSpec({
 
 
 
-class ModelManager(private val modelStorage: ModelStoragePort) : ModelManagerPort {
-    override fun createModel(): ModelIdentifier {
-        val identifier = ModelIdentifier(UUID.randomUUID().toString())
-        modelStorage.storeModel(PersistentModel(identifier))
 
-        return identifier
-    }
-}
 

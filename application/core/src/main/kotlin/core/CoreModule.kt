@@ -1,9 +1,11 @@
 package core
 
+import core.model.ModelManager
 import org.koin.dsl.module
+import ports.provides.ModelManagerPort
 
 // Core module for Dependency Injection
 val coreModule = module(createdAtStart = true) {
 
-    // Services for use cases
+    single<ModelManagerPort> { ModelManager(modelStorage = get()) }
 }

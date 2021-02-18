@@ -1,13 +1,16 @@
 package adapters
 
 import adapters.config.*
+import adapters.persistence.InMemoryModelStorage
 import adapters.routes.HealthCheckRoute
 import adapters.remoting.HttpClientFactory
 import adapters.remoting.HttpClientFactoryImpl
+import adapters.routes.ModelRoutes
 import adapters.services.healthcheck.HealthCheckService
 import adapters.util.DateSupplierSystemTimeImpl
 import org.koin.dsl.module
 import ports.input.util.DateSupplier
+import ports.requires.ModelStoragePort
 
 // Environment-specific configuration
 val envModule = module(createdAtStart = true) {
@@ -39,9 +42,14 @@ val adapterModule = module(createdAtStart = true) {
 
     // Web routes
     single { HealthCheckRoute(application = get()) }
+    single { ModelRoutes(application = get(), modelManager = get()) }
 
     // Internal adapter services
     single {
         HealthCheckService(appConfig = get(), dateSupplier = get())
+    }
+
+    single<ModelStoragePort> {
+        InMemoryModelStorage()
     }
 }

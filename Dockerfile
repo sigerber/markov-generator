@@ -15,6 +15,6 @@ USER apiserver:apiserver
 ENV PORT 8080
 EXPOSE 8080
 
-ADD --chown=apiserver:apiserver ./build/distributions/app-1.0.tar /home/apiserver/app
+ADD --chown=apiserver:apiserver ./application/app/build/distributions/app-1.0.tar /home/apiserver/app
 WORKDIR /home/apiserver/app
 CMD ["/home/apiserver/app/app-1.0/bin/app"]

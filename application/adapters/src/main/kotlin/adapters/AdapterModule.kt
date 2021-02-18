@@ -1,7 +1,7 @@
 package adapters
 
 import adapters.config.*
-import adapters.primary.web.routes.healthcheck.HealthCheckRoute
+import adapters.routes.HealthCheckRoute
 import adapters.remoting.HttpClientFactory
 import adapters.remoting.HttpClientFactoryImpl
 import adapters.services.healthcheck.HealthCheckService

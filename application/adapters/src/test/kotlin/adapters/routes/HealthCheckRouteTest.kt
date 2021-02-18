@@ -1,4 +1,4 @@
-package adapters.routes.healthcheck
+package adapters.routes
 
 import adapters.IntegrationTestContext.withApp
 import adapters.config.AppConfig

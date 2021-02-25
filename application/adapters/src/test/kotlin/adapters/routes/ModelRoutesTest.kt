@@ -1,25 +1,21 @@
 package adapters.routes
 
 import adapters.IntegrationTestContext.withApp
-import adapters.config.AppConfig
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import adapters.remoting.HttpClientFactory
 import com.nhaarman.mockitokotlin2.reset
-import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.shouldBe
-import io.ktor.http.*
-import io.ktor.server.testing.*
+import io.ktor.client.request.*
+import kotlinx.coroutines.delay
 import org.koin.ktor.ext.inject
-import ports.input.util.DateSupplier
-import ports.output.healthcheck.HealthCheckResponseDto
 import ports.provides.ModelManagerPort
 
 class ModelRoutesTest : DescribeSpec({
 
     withApp {
         val modelManager: ModelManagerPort by application.inject()
+        val clientFactory: HttpClientFactory by application.inject()
+        val client = clientFactory.httpClient()
 
         beforeEach {
             reset(modelManager)
@@ -29,11 +25,9 @@ class ModelRoutesTest : DescribeSpec({
             context("when no models exist") {
                 it("creates a model") {
 
-                    with(handleRequest(HttpMethod.Post, "/model")) {
-                        response.status() shouldBe HttpStatusCode.OK
+                    client.post<String>(path = "/model", host="localhost", port = 8080) {}
 
-                        verify(modelManager).createModel()
-                    }
+                    verify(modelManager).createModel()
                 }
             }
         }

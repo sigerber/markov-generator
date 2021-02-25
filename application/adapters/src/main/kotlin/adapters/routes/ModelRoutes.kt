@@ -12,8 +12,8 @@ class ModelRoutes(application: Application, private val modelManager: ModelManag
         application.routing {
 
             post("/model") {
-                modelManager.createModel()
-                call.respond(HttpStatusCode.OK)
+                val modelIdentifier = modelManager.createModel()
+                call.respond(HttpStatusCode.OK, modelIdentifier)
             }
         }
     }

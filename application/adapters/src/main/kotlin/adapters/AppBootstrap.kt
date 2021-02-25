@@ -1,7 +1,6 @@
 package adapters
 
 import adapters.primary.web.util.RestGenericException
-import adapters.primary.web.util.respondRestException
 import adapters.primary.web.util.toRestErrorResponse
 import com.github.michaelbull.logging.InlineLogger
 import io.ktor.application.*
@@ -67,7 +66,7 @@ class AppBootstrap(
 
             // Content conversions - here we setup serialization and deserialization of JSON objects
             install(ContentNegotiation) {
-               jsonKtor()
+                jsonKtor()
             }
 
             // Return proper HTTP error: https://ktor.io/features/status-pages.html
@@ -80,10 +79,6 @@ class AppBootstrap(
                         status = HttpStatusCode.fromValue(errorResponse.status),
                         message = errorResponse
                     )
-                }
-                exception<RestGenericException> { ex ->
-                    logger.e("StatusPages/RestGenericException", ex) { "REST error to be returned to a caller" }
-                    call.respondRestException(ex)
                 }
             }
         }

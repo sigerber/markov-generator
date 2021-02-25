@@ -1,27 +1,20 @@
 package adapters.remoting
 
 import adapters.primary.web.util.RestExternalServiceCallException
-import adapters.util.sharedJsonMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.michaelbull.logging.InlineLogger
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.HttpResponseValidator
-import io.ktor.client.features.RedirectResponseException
-import io.ktor.client.features.ResponseException
-import io.ktor.client.features.ServerResponseException
-import io.ktor.client.features.json.JacksonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.logging.DEFAULT
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readBytes
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import net.pwall.json.ktor.JSONKtor
+import net.pwall.json.ktor.client.JSONKtorClient
+import net.pwall.json.parseJSON
 import shared.util.e
+import java.nio.ByteBuffer
+import java.nio.charset.Charset
 
 internal class HttpClientFactoryImpl : HttpClientFactory {
 
@@ -35,7 +28,7 @@ internal class HttpClientFactoryImpl : HttpClientFactory {
                 }
             }
             install(JsonFeature) {
-                serializer = JacksonSerializer()
+                serializer = JSONKtorClient()
             }
             install(Logging) {
                 logger = Logger.DEFAULT
@@ -64,7 +57,8 @@ internal class HttpClientFactoryImpl : HttpClientFactory {
             // At first we will try to exract response payload and map it to JSON structure of plain text
             val body = readBytes()
             if (contentType()?.contentType?.contains(ContentType.Application.Json.contentType) == true) {
-                sharedJsonMapper.readValue<Map<String, Any>>(body)
+                val bodyText = contentType()?.charset()?.decode(ByteBuffer.wrap(body)) ?: body.toString(Charset.defaultCharset())
+                bodyText.parseJSON<Map<String, Any?>>()!!
             } else {
                 mapOf("responseBody" to String(body))
             }

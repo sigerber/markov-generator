@@ -54,6 +54,9 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
+
+        systemProperty("pact.provider.version", System.getProperty("pact.provider.version", project.version.toString()))
+        systemProperty("pact.verifier.publishResults", System.getProperty("pact.verifier.publishResults", "false"))
     }
 
     dependencies {

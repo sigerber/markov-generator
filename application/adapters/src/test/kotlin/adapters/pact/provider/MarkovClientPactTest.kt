@@ -17,8 +17,7 @@ import ports.provides.ModelManagerPort
 
 @Provider("markov-generator")
 @Consumer("markov-client")
-@PactBroker(host = "localhost", port = "9292")
-@IgnoreNoPactsToVerify(ignoreIoErrors = "true")
+@PactBroker(host = "localhost", port = "9292", tags = ["dev", "prod"])
 class MarkovClientPactTest {
 
     @TestTemplate
